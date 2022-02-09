@@ -1,8 +1,6 @@
 package com.wx.pn.utils;
 
 
-import java.util.Date;
-
 /**
  * Created by wei on 2016/12/12.
  */
@@ -57,10 +55,10 @@ public class BaseResp<T> {
     }
 
     public BaseResp(){
-        this.currentTime = DateUtils.format(new Date(),DateUtils.defaultDateTimeFormat);
+        //this.currentTime = DateUtils.format(new Date(),DateUtils.defaultDateTimeFormat);
     }
 
-    public BaseResp(int code, String message, T data) {
+    /*public BaseResp(int code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
@@ -86,7 +84,7 @@ public class BaseResp<T> {
         this.message = resultStatus.getErrorMsg();
         this.data = data;
         this.currentTime = DateUtils.format(new Date(),DateUtils.defaultDateTimeFormat);
-    }
+    }*/
 
 
 }
