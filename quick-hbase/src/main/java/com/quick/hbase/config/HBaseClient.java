@@ -1,5 +1,6 @@
 package com.quick.hbase.config;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CompareOperator;
@@ -218,7 +219,7 @@ public class HBaseClient {
 			System.out.println(column);
 			System.out.println(value);
 		}
-		return null;
+		return JSON.toJSONString(result);
 	}
 
 	/**
