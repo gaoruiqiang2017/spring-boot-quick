@@ -1,4 +1,4 @@
-package com.quick.example;
+package org.example;
 
 
 import io.grpc.ManagedChannel;

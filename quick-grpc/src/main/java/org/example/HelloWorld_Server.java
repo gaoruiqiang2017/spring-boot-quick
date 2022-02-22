@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2022 Baidu, Inc. All Rights Reserved.
  */
-package com.quick.example;
+package org.example;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
