@@ -1,7 +1,6 @@
 package com.quick.hbase;
 
 import com.quick.hbase.config.HBaseClient;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,28 +57,28 @@ public class HBaseClientController {
 
     }
 
-    @Test
+    @RequestMapping(value = "/hbase/deleteRow", method = RequestMethod.GET)
     public void deleteRow() throws IOException {
         hBaseClient.deleteRow(TABLE, "2");
     }
 
 
-    @Test
+    @RequestMapping(value = "/hbase/deleteColumnFamily", method = RequestMethod.GET)
     public void deleteColumnFamily() throws IOException {
         hBaseClient.deleteColumnFamily(TABLE, "1", TABLE_FAM_2);
     }
 
-    @Test
+    @RequestMapping(value = "/hbase/deleteColumn", method = RequestMethod.GET)
     public void deleteColumn() throws IOException {
         hBaseClient.deleteColumn(TABLE, "1", TABLE_FAM_2, "action");
     }
 
-    @Test
+    @RequestMapping(value = "/hbase/deleteTable", method = RequestMethod.GET)
     public void deleteTable() throws IOException {
         hBaseClient.deleteTable(TABLE);
     }
 
-    @Test
+    @RequestMapping(value = "/hbase/getValue", method = RequestMethod.GET)
     public void getValue() {
         String result = hBaseClient.getValue(TABLE, "1", TABLE_FAM_2, "time");
         System.out.println(result);
@@ -91,12 +90,12 @@ public class HBaseClientController {
         return hBaseClient.selectOneRow(TABLE, "1");
     }
 
-    @Test
+    @RequestMapping(value = "/hbase/scanTable", method = RequestMethod.GET)
     public void scanTable() throws IOException {
         hBaseClient.scanTable(TABLE, "{FILTER=>\"PrefixFilter('2019')\"");
     }
 
-    @Test
+    @RequestMapping(value = "/hbase/tableExists", method = RequestMethod.GET)
     public void tableExists() throws IOException {
         System.out.println(hBaseClient.tableExists(TABLE));
     }
