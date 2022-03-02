@@ -1,16 +1,12 @@
 package com.quick.hbase;
 
-import com.blueware.api.agent.OneApm;
-import com.blueware.monitor.bridge.test.CustomMetric;
 import com.quick.hbase.config.HBaseClient;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -27,7 +23,7 @@ public class HBaseClientController {
     @Autowired
     private HBaseClient hBaseClient;
 
-    @Test
+    @RequestMapping(value = "/hbase/createTable", method = RequestMethod.GET)
     public void createTable() throws IOException {
         hBaseClient.createTable(TABLE, TABLE_FAM_1, TABLE_FAM_2);
     }
@@ -35,7 +31,7 @@ public class HBaseClientController {
     /**
      * 向TABLE中插入一条记录，列族quick下，写了两个key，speed和感觉feel，列族hbase下插入三个key 动作action、时间time和用户user，类似一个日志
      */
-    @Test
+    @RequestMapping(value = "/hbase/insertOrUpdate", method = RequestMethod.GET)
     public void insertOrUpdate() throws IOException {
         hBaseClient.insertOrUpdate(TABLE, "1", TABLE_FAM_1, "speed", "1km/h");
         hBaseClient.insertOrUpdate(TABLE, "1", TABLE_FAM_1, "feel", "better");
@@ -105,11 +101,11 @@ public class HBaseClientController {
         System.out.println(hBaseClient.tableExists(TABLE));
     }
 
-    @RequestMapping("/test/emop2")
-    @ResponseBody
-    public Object getMerchantList3(HttpServletRequest request) throws InterruptedException {
-        OneApm.addCustomMetric(CustomMetric.newBuilder().name("sds").value(
-                "fff").build());
-        return "/test/emop/";
-    }
+    //@RequestMapping("/test/emop2")
+    //@ResponseBody
+    //public Object getMerchantList3(HttpServletRequest request) throws InterruptedException {
+    //    OneApm.addCustomMetric(CustomMetric.newBuilder().name("sds").value(
+    //            "fff").build());
+    //    return "/test/emop/";
+    //}
 }
