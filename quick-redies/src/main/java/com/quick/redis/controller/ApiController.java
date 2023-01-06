@@ -41,6 +41,7 @@ public class ApiController {
 
     @RequestMapping(value = "/string/set", method = RequestMethod.GET)
     public Integer set() {
+        System.out.println("redis /string/set");
         String key = "string2";
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("raw_value", "娃哈哈(北京)");
@@ -53,6 +54,7 @@ public class ApiController {
 
     @RequestMapping(value = "/string/get", method = RequestMethod.GET)
     public String get() {
+        System.out.println("redis /string/get");
         return companyService.get("string2");
     }
 }

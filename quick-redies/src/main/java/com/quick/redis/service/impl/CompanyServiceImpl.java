@@ -62,12 +62,12 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Integer add() {
 
-        for(int i=0;i<10000;i++) {
+        for(int i=0;i<2;i++) {
             String key = "Resume:company:" + getChineseName();
             redisTemplate.opsForValue().set(key, i);
         }
 
-        return 1000;
+        return 2;
     }
 
     @Override
