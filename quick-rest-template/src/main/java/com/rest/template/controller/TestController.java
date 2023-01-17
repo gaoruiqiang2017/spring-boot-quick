@@ -1,7 +1,6 @@
 package com.rest.template.controller;
 
 import com.rest.template.model.TestDTO;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,11 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * 测试接口
@@ -79,9 +82,13 @@ public class TestController {
     @PostMapping("testPostParam2")
     public String testPostParam2(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        String id = request.getParameter("id");
+        String[] ids = request.getParameterValues("id");
+        Enumeration<String> parameterNames = request.getParameterNames();
+        Map<String, String[]> parameterMap = request.getParameterMap();
         System.out.println("Post id:" );
         System.out.println("Post name:" );
-        //String bodyString = getBodyString(request);
+        String bodyString = getBodyString(request);
         return "post succ";
     }
     @PostMapping("testPostParam3")
@@ -178,17 +185,17 @@ public class TestController {
         BufferedReader reader = null;
         try {
             inputStream = request.getInputStream();
-            byte[] bytes = IOUtils.toByteArray(inputStream);
-            String s1 = new String(bytes);
+//            byte[] bytes = IOUtils.toByteArray(inputStream);
+//            String s1 = new String(bytes);
 
-//            if (inputStream == null) {
-//                return null;
-//            }
-//            reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
-//            String line = "";
-//            while ((line = reader.readLine()) != null) {
-//                sb.append(line);
-//            }
+            if (inputStream == null) {
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -229,5 +236,13 @@ public class TestController {
             }
 
         }
+    }
+
+    public static void main(String[] args) {
+        String contentType = "text/plain;charset=UTF-8";
+        if(contentType.contains(";")){
+            contentType = contentType.substring(0,contentType.indexOf(";"));
+        }
+        System.out.println(contentType);
     }
 }

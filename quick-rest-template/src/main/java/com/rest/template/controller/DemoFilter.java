@@ -30,7 +30,7 @@ public class DemoFilter implements Filter {
 
         byte[] requestBody = requestWrapper.getBody();
         String s = new String(requestBody);
-
+        //System.out.printf("s=="+ s);
         // TODO do something
         BodyCachingHttpServletResponseWrapper responseWrapper =
                 new BodyCachingHttpServletResponseWrapper((HttpServletResponse) response);
@@ -40,7 +40,6 @@ public class DemoFilter implements Filter {
         byte[] responseBody = responseWrapper.getBody();
         String s1 = new String(responseBody);
         // TODO do something
-        System.out.printf("s=="+s);
         System.out.printf("s1=="+s1);
     }
 
