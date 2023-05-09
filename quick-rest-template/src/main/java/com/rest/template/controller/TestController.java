@@ -1,5 +1,7 @@
 package com.rest.template.controller;
 
+import com.google.common.eventbus.EventBus;
+import com.rest.template.model.GuavaEvent;
 import com.rest.template.model.TestDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -246,11 +248,24 @@ public class TestController {
         }
     }
 
-    public static void main(String[] args) {
-        String contentType = "text/plain;charset=UTF-8";
-        if(contentType.contains(";")){
-            contentType = contentType.substring(0,contentType.indexOf(";"));
+//    public static void main(String[] args) {
+//        String contentType = "text/plain;charset=UTF-8";
+//        if(contentType.contains(";")){
+//            contentType = contentType.substring(0,contentType.indexOf(";"));
+//        }
+//        System.out.println(contentType);
+//    }
+
+
+
+
+
+        public static void main(String[] args) {
+            EventBus eventbus = new EventBus();
+            GuavaEvent guavaEvent = new GuavaEvent();
+            eventbus.register(guavaEvent);
+            eventbus.post("Tom");
         }
-        System.out.println(contentType);
-    }
+
+
 }
