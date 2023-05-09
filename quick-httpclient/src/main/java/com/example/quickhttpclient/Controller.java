@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/httpclient")
 public class Controller {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/test")
+    @RequestMapping(method = RequestMethod.GET, value = "/test/2232434343")
     public void test() throws Exception {
-        String url = "http://127.0.0.1:8080/testGet";
+        String url = "http://127.0.0.1:8081/testGet2/2313132323";
         //HttpUtil.HttpResult httpResult = HttpUtil.httpGet(url);
         HttpClientUtil.HttpClientResult httpClientResult = HttpClientUtil.doGet(url);
         System.out.println("response=="+httpClientResult.getContent());

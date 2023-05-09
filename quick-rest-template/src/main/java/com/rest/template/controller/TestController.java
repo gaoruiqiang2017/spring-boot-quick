@@ -3,6 +3,7 @@ package com.rest.template.controller;
 import com.rest.template.model.TestDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -35,16 +37,18 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping("testGet")
-    public TestDTO testGet(HttpServletRequest request, HttpServletResponse response) {
-        TestDTO TestDTO = new TestDTO();
-        TestDTO.setId(1);
-        TestDTO.setName("get");
-        return TestDTO;
-    }
-    @RequestMapping("testGet2")
-    public String testGet2(HttpServletRequest request, HttpServletResponse response) {
+    public TestDTO testGet(HttpServletRequest request, HttpServletResponse response,@RequestBody TestDTO testDTO) {
+        System.out.println("Post id:" );
 
-        return "ss";
+        testDTO.setId(121);
+        testDTO.setName("get");
+        return testDTO;
+    }
+    @RequestMapping("testGet2/{id}")
+    @ResponseBody
+    public String testGet2(@PathVariable String id) {
+        System.out.println("id ==="+id);
+        return id;
     }
 
     /**
@@ -66,22 +70,23 @@ public class TestController {
      * @return
      */
     @PostMapping("testPostParam/{id}")
+    @ResponseBody
     public String testPostParam(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id, @RequestParam("name") String name)
             throws IOException {
         System.out.println("Post id:" + id);
         System.out.println("Post name:" + name);
         String url = "http://127.0.0.1:8080/testGet2";
         //String http = HttpUtils.getHttp(url, null);
-        String s = HttpClientUtil.sendHttp(HttpMethod.GET, url, null);
+        //String s = HttpClientUtil.sendHttp(HttpMethod.GET, url, null);
         //String response = HttpClientUtil.sendHttp(HttpMethod.GET, url, null);
-        System.out.println("response=="+s);
+        //System.out.println("response=="+s);
         return "post succ";
     }
 
     @ResponseBody
     @PostMapping("testPostParam2")
-    public String testPostParam2(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    public TestDTO testPostParam2(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         String id = request.getParameter("id");
         String[] ids = request.getParameterValues("id");
         Enumeration<String> parameterNames = request.getParameterNames();
@@ -89,7 +94,10 @@ public class TestController {
         System.out.println("Post id:" );
         System.out.println("Post name:" );
         String bodyString = getBodyString(request);
-        return "post succ";
+        TestDTO testDTO = new TestDTO();
+        testDTO.setId(111);
+        testDTO.setName("ssss");
+        return testDTO;
     }
     @PostMapping("testPostParam3")
     public String testPostParam3(HttpServletRequest request, HttpServletResponse response)
