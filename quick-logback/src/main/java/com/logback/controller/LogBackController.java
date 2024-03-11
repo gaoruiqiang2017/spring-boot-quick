@@ -14,14 +14,16 @@ public class LogBackController {
     @RequestMapping(value = "/logback")
     @ResponseBody
     public String logback() {
-        for (int i = 0; i < 100000; i++) {
+
+        logger.trace("日志输出:{} trace:{}","我","trace");
+        logger.debug("日志输出:{} debug:{}","我","debug");
+        logger.info("日志输出:{} info:{}","我","info");
+        logger.warn("日志输出:{} warn:{}","我","warn");
+        logger.error("日志输出:{} error:{}","我","error");
+        for (int i = 0; i < 1; i++) {
             // 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR <
             // FATAL，如果设置为WARN，则低于WARN的信息都不会输出。
-            logger.trace("日志输出 trace");
-            logger.debug("日志输出 debug");
-            logger.info("日志输出 info");
-            logger.warn("日志输出 warn");
-            logger.error("日志输出 error");
+
         }
         return "Hello world";
     }

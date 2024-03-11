@@ -18,10 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.management.ManagementFactory;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Map;
@@ -32,6 +34,52 @@ import java.util.Map;
 @Controller
 public class TestController {
 
+    @RequestMapping("test")
+    @ResponseBody
+    public String testGet(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Post id:");
+
+        return getPackageName();
+    }
+
+    public static String getPackageName() {
+        String processName = ManagementFactory.getRuntimeMXBean().getName();
+        int atIndex = processName.indexOf("@");
+        if (atIndex > 0) {
+            int pid = Integer.parseInt(processName.substring(0, atIndex));
+            return getPackageNameByPid(pid);
+        }
+        return null;
+    }
+
+    private static String getPackageNameByPid(int pid) {
+        try {
+            String[] cmds = { "jcmd", String.valueOf(pid), "VM.system_properties" };
+            Process p = Runtime.getRuntime().exec(cmds);
+            p.waitFor();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("java.class.path")) {
+                        String[] parts = line.split("=");
+                        if (parts.length > 1) {
+                            String classPath = parts[1].trim();
+                            String[] classPathParts = classPath.split(File.pathSeparator);
+                            for (String path : classPathParts) {
+                                if (path.endsWith(".jar") || path.endsWith(".war")) {
+                                    System.out.println("path:" + path);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * get方法测试
      *
@@ -39,18 +87,34 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping("testGet")
-    public TestDTO testGet(HttpServletRequest request, HttpServletResponse response,@RequestBody TestDTO testDTO) {
-        System.out.println("Post id:" );
+    public TestDTO testGet(HttpServletRequest request, HttpServletResponse response, @RequestBody TestDTO testDTO) {
+        System.out.println("Post id:");
 
         testDTO.setId(121);
         testDTO.setName("get");
         return testDTO;
     }
+
     @RequestMapping("testGet2/{id}")
-    @ResponseBody
     public String testGet2(@PathVariable String id) {
-        System.out.println("id ==="+id);
-        return id;
+        //JSONObject requestBody = new JSONObject();
+        //requestBody.put("token", "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInVzZXJBY2NvdW50IjoiYWRtaW4iLCJ1c2VyX2tleSI6IjZkY2JiNjMxLWI2NmYtNDk0NS1iYzc5LTAyMzFiODUwNjU1ZSJ9.hz-G_iNoCXmBHxk1dJhCsGZTMVbcm3LBvBDl4YV7wPLPJmu1jzWqPjJSQSoqYPXkRNPVsg5Tmv5Q46ZnoBr-Kg");
+        HttpUtil.HttpResult httpResult = HttpUtil.httpGet(
+                "http://127.0.0.1:8080/myd-sso/login?token=eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInVzZXJBY2NvdW50IjoiYWRtaW4iLCJ1c2VyX2tleSI6IjZkY2JiNjMxLWI2NmYtNDk0NS1iYzc5LTAyMzFiODUwNjU1ZSJ9.hz-G_iNoCXmBHxk1dJhCsGZTMVbcm3LBvBDl4YV7wPLPJmu1jzWqPjJSQSoqYPXkRNPVsg5Tmv5Q46ZnoBr-Kg");
+        // String s = HttpClientUtil.sendHttp(HttpMethod.GET, "http://127.0.0.1:8080/myd-sso/login?token=1ww", null);
+        String s = httpResult.content;
+        return s;
+        //return "redirect:".concat("http://123.125.19.179:7070/myd-sso/login?token=eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInVzZXJBY2NvdW50IjoiYWRtaW4iLCJ1c2VyX2tleSI6IjZkY2JiNjMxLWI2NmYtNDk0NS1iYzc5LTAyMzFiODUwNjU1ZSJ9.hz-G_iNoCXmBHxk1dJhCsGZTMVbcm3LBvBDl4YV7wPLPJmu1jzWqPjJSQSoqYPXkRNPVsg5Tmv5Q46ZnoBr-Kg");
+    }
+
+    @RequestMapping("javatestGet")
+    @ResponseBody
+    public String testGet4() {
+        // HttpUtil.HttpResult httpResult = HttpUtil.httpGet("http://10.128.6.11:8004/crossApp1");
+        HttpUtil.HttpResult httpResult = HttpUtil.httpGet("http://10.128.6.11:8081/rolldice");
+        // String s = HttpClientUtil.sendHttp(HttpMethod.GET, "http://127.0.0.1:8080/myd-sso/login?token=1ww", null);
+        String s = httpResult.content;
+        return s;
     }
 
     /**
@@ -93,19 +157,20 @@ public class TestController {
         String[] ids = request.getParameterValues("id");
         Enumeration<String> parameterNames = request.getParameterNames();
         Map<String, String[]> parameterMap = request.getParameterMap();
-        System.out.println("Post id:" );
-        System.out.println("Post name:" );
+        System.out.println("Post id:");
+        System.out.println("Post name:");
         String bodyString = getBodyString(request);
         TestDTO testDTO = new TestDTO();
         testDTO.setId(111);
         testDTO.setName("ssss");
         return testDTO;
     }
+
     @PostMapping("testPostParam3")
     public String testPostParam3(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        System.out.println("Post id:" );
-        System.out.println("Post name:" );
+        System.out.println("Post id:");
+        System.out.println("Post name:");
         String bodyString = readAsChars(request);
         return "post succ";
     }
@@ -256,16 +321,11 @@ public class TestController {
 //        System.out.println(contentType);
 //    }
 
-
-
-
-
-        public static void main(String[] args) {
-            EventBus eventbus = new EventBus();
-            GuavaEvent guavaEvent = new GuavaEvent();
-            eventbus.register(guavaEvent);
-            eventbus.post("Tom");
-        }
-
+    public static void main(String[] args) {
+        EventBus eventbus = new EventBus();
+        GuavaEvent guavaEvent = new GuavaEvent();
+        eventbus.register(guavaEvent);
+        eventbus.post("Tom");
+    }
 
 }

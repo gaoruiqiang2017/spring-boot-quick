@@ -30,7 +30,7 @@
         <module>quick-logback</module>
         <module>quick-activemq</module>
         <module>quick-docker</module>
-        <module>quick-vue</module>
+
         <module>quick-dynamic-bean</module>
         <module>quick-activemq2</module>
         <module>quick-dubbo</module>

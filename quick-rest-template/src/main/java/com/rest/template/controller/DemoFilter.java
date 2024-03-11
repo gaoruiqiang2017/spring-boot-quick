@@ -29,19 +29,19 @@ public class DemoFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String bodyString = getBodyString(httpServletRequest);
-        System.out.println(bodyString);
-        //        BodyCachingHttpServletRequestWrapper requestWrapper =
-//                new BodyCachingHttpServletRequestWrapper((HttpServletRequest) request);
-//
-//        byte[] requestBody = requestWrapper.getBody();
-//        String s = new String(requestBody);
-//        //System.out.printf("s=="+ s);
+        //String bodyString = getBodyString(httpServletRequest);
+        //System.out.println(bodyString);
+                BodyCachingHttpServletRequestWrapper requestWrapper =
+                new BodyCachingHttpServletRequestWrapper((HttpServletRequest) request);
+
+        byte[] requestBody = requestWrapper.getBody();
+        String s = new String(requestBody);
+        //System.out.printf("s=="+ s);
 //        // TODO do something
 //        BodyCachingHttpServletResponseWrapper responseWrapper =
 //                new BodyCachingHttpServletResponseWrapper((HttpServletResponse) response);
 
-        chain.doFilter(request , response);
+        chain.doFilter(requestWrapper , response);
 //
 //        byte[] responseBody = responseWrapper.getBody();
 //        String s1 = new String(responseBody);

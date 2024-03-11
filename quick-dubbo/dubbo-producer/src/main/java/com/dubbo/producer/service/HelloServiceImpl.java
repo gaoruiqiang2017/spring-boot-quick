@@ -1,9 +1,9 @@
 package com.dubbo.producer.service;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import com.dubbo.api.HelloService;
+import org.apache.dubbo.config.annotation.Service;
 
-@Service
+@Service(version = "1.0.0")
 public class HelloServiceImpl implements HelloService {
 
     @Override

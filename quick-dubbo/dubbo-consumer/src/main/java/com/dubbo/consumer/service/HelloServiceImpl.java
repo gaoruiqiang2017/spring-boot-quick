@@ -1,17 +1,17 @@
-package com.dubbo.consumer.service;
-
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.dubbo.api.HelloService;
-import org.springframework.stereotype.Component;
-
-@Component
-public class HelloServiceImpl implements HelloService {
-
-    @Reference
-    public HelloService helloService;
-
-    @Override
-    public String sayHello(String name) {
-        return helloService.sayHello(name);
-    }
-}
+//package com.dubbo.consumer.service;
+//
+//import com.dubbo.api.HelloService;
+//import org.apache.dubbo.config.annotation.DubboReference;
+//import org.springframework.stereotype.Component;
+//
+//@Component
+//public class HelloServiceImpl implements HelloService {
+//
+//    @DubboReference
+//    public HelloService helloService;
+//
+//    @Override
+//    public String sayHello(String name) {
+//        return helloService.sayHello(name);
+//    }
+//}
